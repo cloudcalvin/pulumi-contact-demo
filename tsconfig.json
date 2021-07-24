@@ -1,0 +1,31 @@
+{
+  "extends": "ts-node/node14/tsconfig.json",
+  "ts-node": {
+    "files": true
+  },
+  "compilerOptions": {
+    "allowJs": false,
+    "baseUrl": "./",
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "outDir": "build",
+    "paths": {
+      "backend/*": [
+        "backend/*"
+      ],
+      "infra/*": [
+        "infra/*"
+      ],
+      "unit/*": [
+        "__tests__/unit/*"
+      ]
+    },
+    "sourceMap": true
+  },
+  "files": [
+    "infra/index.ts"
+  ]
+}

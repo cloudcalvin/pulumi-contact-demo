@@ -1,0 +1,102 @@
+#!/bin/sh
+
+###
+#
+# If "unit" is passed as $1 then
+#   only unit tests are run,
+# Otherwise
+#   a temporary Pulumi stack is created        (~2s)
+#   the Docker services will run and           (~10s)
+#   the Pulumi stack will be updated and       (~25s | ~50s)
+#   the (specified) tests will be run and
+#   the temporary Pulumi stack is removed and  (~2s)
+#   the Docker services will stop.             (~10s)
+#
+# If not running from within an npm script then jest will be executed via npm.
+#
+###
+
+_test_is_not_unit() {
+  [ $# -eq 0 -o "$1" != unit ]
+}
+
+_localstack_up() {
+  [ $TRACE ] && set -x
+  docker-compose ${DOCKER_COMPOSE_VERBOSE} up --detach
+  set +x
+  printf "Waiting for LocalStack."
+  while ! curl -s $LOCALSTACK_ENDPOINT | grep -q '"running"'; do
+    sleep 1
+    printf "."
+  done
+  [ $TRACE ] && set -x
+  LOCALSTACK_DOCKER_CONTAINER=$(docker compose ps -aq | cut -c1-12)
+  echo "ready"
+}
+
+_localstack_lambda_reuse_down() {
+  [ $TRACE ] && set -x
+  ! [ ${LOCALSTACK_DOCKER_CONTAINER} ] && return;
+
+  # remove all containers with a HOSTNAME variable of the LocalStack container. These will be the orphaned "Docker reuse" Lambda executors.
+  for container in $(docker ps -aq | xargs -I% docker inspect -f '{{range $index, $value := .Config.Env}}% {{$value}}{{println}}{{end}}' % | grep " HOSTNAME=${LOCALSTACK_DOCKER_CONTAINER}"  | cut -d' ' -f1); do
+    docker rm -f ${container} | xargs echo Removing Lambda executor container
+  done
+}
+
+_localstack_down() {
+  [ $TRACE ] && set -x
+  docker-compose ${DOCKER_COMPOSE_VERBOSE} down
+  _localstack_lambda_reuse_down  # TODO: remove when LocalStack fixes this and does it itself
+}
+
+_pulumi_up() {
+  [ $TRACE ] && set -x
+  PREVIOUS_STACK=$(pulumi stack --show-name)
+  ./init-local-stack --test &&
+  pulumi ${PULUMI_VERBOSE} up --skip-preview --yes --non-interactive --suppress-outputs
+}
+
+_pulumi_down() {
+  [ $TRACE ] && set -x
+  ./init-local-stack --test --remove
+  pulumi ${PULUMI_VERBOSE} stack select ${PREVIOUS_STACK}
+}
+
+
+[ $TRACE ] && PULUMI_VERBOSE='-v=3 --logtostderr' && DOCKER_COMPOSE_VERBOSE='--verbose'
+
+for v in $(env | grep ^AWS | cut -d= -f1); do unset $v; done
+
+export AWS_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=test
+export AWS_SECRET_ACCESS_KEY=test
+export LOCALSTACK_ENDPOINT=http://localhost:4566
+
+[ $TRACE ] && (env | sort)
+
+[ $TRACE ] && set -x
+
+if _test_is_not_unit "$@"; then
+  _localstack_up "$@"
+  _pulumi_up "$@"
+fi
+
+if which jest >/dev/null; then
+  jest "$@"
+  testStatus=$?
+else
+  yarn jest "$@"
+  testStatus=$?
+fi
+
+if _test_is_not_unit "$@"; then
+  [ $testStatus -ne 0 ] && echo "Non-zero test status. Keeping LocalStack running for diagnosis." && exit ${testStatus}
+  [ ${KEEP_TEST_STACK} ] && echo "KEEP_TEST_STACK set. Keeping LocalStack running for diagnosis." && exit ${testStatus}
+
+  _pulumi_down "$@"
+  _localstack_lambda_reuse_down
+  _localstack_down "$@"
+fi
+
+exit $testStatus

@@ -1,0 +1,29 @@
+version: '3.9'
+
+services:
+  localstack:
+    image: localstack/localstack
+    network_mode: bridge
+    ports:
+      - "127.0.0.1:53:53"
+      - "127.0.0.1:53:53/udp"
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4571:4571"
+      - "127.0.0.1:8080:8080"
+    environment:
+      - SERVICES=serverless,iam,s3
+      - DATA_DIR=/tmp/localstack/data
+      - HOST_TMP_FOLDER=/private/${TMPDIR}/localstack
+      - LAMBDA_EXECUTOR=docker-reuse
+      - PORT_WEB_UI=8080
+#      - LAMBDA_REMOTE_DOCKER=false
+    volumes:
+#      - /private/${TMPDIR}/localstack:/tmp/localstack:delegated
+      - localstack:/tmp/localstack
+      - /var/run/docker.sock:/var/run/docker.sock:consistent
+
+volumes:
+  localstack:
+
+# For slower `pulumi up` but faster tests / Lambda invocations, uncomment LAMBDA_REMOTE_DOCKER and use alternate /tmp/localstack volume bind mount

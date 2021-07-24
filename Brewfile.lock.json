@@ -1,0 +1,32 @@
+{
+  "entries": {
+    "brew": {
+      "asdf": {
+        "version": "0.8.1_1",
+        "bottle": {
+          "rebuild": 0,
+          "root_url": "https://ghcr.io/v2/homebrew/core",
+          "files": {
+            "all": {
+              "cellar": ":any_skip_relocation",
+              "url": "https://ghcr.io/v2/homebrew/core/asdf/blobs/sha256:075bbc7db5d24b81f3f171b2dcd5afaf47842f46371ff48aae58740c3358a20e",
+              "sha256": "075bbc7db5d24b81f3f171b2dcd5afaf47842f46371ff48aae58740c3358a20e"
+            }
+          }
+        }
+      }
+    }
+  },
+  "system": {
+    "macos": {
+      "big_sur": {
+        "HOMEBREW_VERSION": "3.2.7-42-gf026dd2",
+        "HOMEBREW_PREFIX": "/usr/local",
+        "Homebrew/homebrew-core": "2351e7ec9f586b2f05bbe778e3300fc583d4e783",
+        "CLT": "12.5.0.22.9",
+        "Xcode": "12.5.1",
+        "macOS": "11.5.2"
+      }
+    }
+  }
+}

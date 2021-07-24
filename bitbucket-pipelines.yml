@@ -1,0 +1,17 @@
+image: node:14
+
+pipelines:
+  default:
+    - step:
+        name: Install
+        caches:
+          - node
+        script:
+          - yarn install --check-cache
+    - step:
+        name: Unit Test
+        caches:
+          - node
+        script:
+          - yarn test unit
+

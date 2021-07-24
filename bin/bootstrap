@@ -1,0 +1,23 @@
+#!/bin/sh
+
+[ $TRACE ] && set -x
+
+# Install Homebrew if it isn't already
+type brew >/dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Install from Brewfile
+brew bundle
+
+# Install ASDF plugins
+cat .tool-versions | cut -d' ' -f1 | xargs -n 1 asdf plugin add
+# Install from .tool-versions
+asdf install
+
+# Install node dependencies
+yarn install
+
+# Pull docker images
+docker compose pull
+
+# Create a local stack for Pulumi
+./init-local-stack
+

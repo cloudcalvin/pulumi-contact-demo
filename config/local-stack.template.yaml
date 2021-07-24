@@ -1,0 +1,69 @@
+config:
+  aws:accessKey: test
+  aws:secretKey: test
+  aws:region: us-east-1
+  aws:skipCredentialsValidation: true
+  aws:skipRequestingAccountId: true
+  aws:endpoints:
+    - acm: ${LOCALSTACK_ENDPOINT}
+      amplify: ${LOCALSTACK_ENDPOINT}
+      apigateway: ${LOCALSTACK_ENDPOINT}
+      applicationautoscaling: ${LOCALSTACK_ENDPOINT}
+      appsync: ${LOCALSTACK_ENDPOINT}
+      athena: ${LOCALSTACK_ENDPOINT}
+      autoscaling: ${LOCALSTACK_ENDPOINT}
+      batch: ${LOCALSTACK_ENDPOINT}
+      cloudformation: ${LOCALSTACK_ENDPOINT}
+      cloudfront: ${LOCALSTACK_ENDPOINT}
+      cloudsearch: ${LOCALSTACK_ENDPOINT}
+      cloudtrail: ${LOCALSTACK_ENDPOINT}
+      cloudwatch: ${LOCALSTACK_ENDPOINT}
+      cloudwatchevents: ${LOCALSTACK_ENDPOINT}
+      cloudwatchlogs: ${LOCALSTACK_ENDPOINT}
+      codecommit: ${LOCALSTACK_ENDPOINT}
+      cognitoidentity: ${LOCALSTACK_ENDPOINT}
+      cognitoidp: ${LOCALSTACK_ENDPOINT}
+      docdb: ${LOCALSTACK_ENDPOINT}
+      dynamodb: ${LOCALSTACK_ENDPOINT}
+      ec2: ${LOCALSTACK_ENDPOINT}
+      ecr: ${LOCALSTACK_ENDPOINT}
+      ecs: ${LOCALSTACK_ENDPOINT}
+      eks: ${LOCALSTACK_ENDPOINT}
+      elasticache: ${LOCALSTACK_ENDPOINT}
+      elasticbeanstalk: ${LOCALSTACK_ENDPOINT}
+      elb: ${LOCALSTACK_ENDPOINT}
+      emr: ${LOCALSTACK_ENDPOINT}
+      es: ${LOCALSTACK_ENDPOINT}
+      firehose: ${LOCALSTACK_ENDPOINT}
+      glacier: ${LOCALSTACK_ENDPOINT}
+      glue: ${LOCALSTACK_ENDPOINT}
+      iam: ${LOCALSTACK_ENDPOINT}
+      iot: ${LOCALSTACK_ENDPOINT}
+      kafka: ${LOCALSTACK_ENDPOINT}
+      kinesis: ${LOCALSTACK_ENDPOINT}
+      kinesisanalytics: ${LOCALSTACK_ENDPOINT}
+      kms: ${LOCALSTACK_ENDPOINT}
+      lambda: ${LOCALSTACK_ENDPOINT}
+      mediastore: ${LOCALSTACK_ENDPOINT}
+      neptune: ${LOCALSTACK_ENDPOINT}
+      organizations: ${LOCALSTACK_ENDPOINT}
+      qldb: ${LOCALSTACK_ENDPOINT}
+      rds: ${LOCALSTACK_ENDPOINT}
+      redshift: ${LOCALSTACK_ENDPOINT}
+      route53: ${LOCALSTACK_ENDPOINT}
+      s3: ${LOCALSTACK_ENDPOINT}
+      sagemaker: ${LOCALSTACK_ENDPOINT}
+      secretsmanager: ${LOCALSTACK_ENDPOINT}
+      servicediscovery: ${LOCALSTACK_ENDPOINT}
+      ses: ${LOCALSTACK_ENDPOINT}
+      sns: ${LOCALSTACK_ENDPOINT}
+      sqs: ${LOCALSTACK_ENDPOINT}
+      ssm: ${LOCALSTACK_ENDPOINT}
+      stepfunctions: ${LOCALSTACK_ENDPOINT}
+      sts: ${LOCALSTACK_ENDPOINT}
+      swf: ${LOCALSTACK_ENDPOINT}
+      transfer: ${LOCALSTACK_ENDPOINT}
+      xray: ${LOCALSTACK_ENDPOINT}
+  aws:defaultTags:
+    tags:
+      iac:LocalOnly: Resources should not appear in a real AWS region!

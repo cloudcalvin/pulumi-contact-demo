@@ -1,0 +1,49 @@
+{
+  "name": "contact",
+  "license": "MIT",
+  "private": true,
+  "main": "infra/",
+  "scripts": {
+    "build": "tsc",
+    "test": "bin/test",
+    "preinstall": "npx only-allow yarn",
+    "pretest": "npx only-allow yarn"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.4.x",
+    "@types/jest": "^26.x",
+    "@types/mime": "^2.x",
+    "@types/node": "^10.17.x",
+    "got": "^11.8.2",
+    "jest": "^26.x",
+    "jest-mock-extended": "^2.0.1",
+    "ts-jest": "^26.x",
+    "ts-node": "^10.1.x",
+    "tslib": "^2.3.x",
+    "typescript": "^4.x"
+  },
+  "peerDependencies": {
+    "@aws-sdk/smithy-client": "^3.25.0",
+    "@aws-sdk/types": "^3.25.x"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.19.0",
+    "@aws-sdk/lib-dynamodb": "^3.20.0",
+    "@aws-sdk/util-dynamodb": "^3.19.0",
+    "@pulumi/aws": "^4.8.0",
+    "@pulumi/awsx": "^0.30.0",
+    "@pulumi/cloud": "^0.30.1",
+    "@pulumi/cloud-aws": "^0.30.1",
+    "@pulumi/pulumi": "^3.0.0",
+    "cookie": "^0.4.1",
+    "ulid": "^2.3.0"
+  },
+  "workspaces": [
+    "backend"
+  ],
+  "engines": {
+    "npm": "Use yarn!",
+    "node": ">=14",
+    "yarn": ">=1.22.11"
+  }
+}
